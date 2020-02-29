@@ -1,4 +1,4 @@
-package mixu.spookutils;
+package mixu.filestuff;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
