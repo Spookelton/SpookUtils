@@ -8,6 +8,7 @@ bin
 
 # idea
 out
+Compiler
 *.ipr
 *.iws
 *.iml
