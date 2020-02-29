@@ -18,7 +18,7 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent e) {
-        ServerProxy.dumpDimensions();
+        //ServerProxy.dumpDimensions();
     }
 
     @SubscribeEvent

@@ -1,18 +1,26 @@
 package mixu.spookutils.proxy;
 
-import com.google.common.collect.ImmutableSet;
 import mixu.spookutils.SpookUtils;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
-import org.apache.logging.log4j.Level;
 import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+@Mod.EventBusSubscriber(Side.SERVER)
 public class ServerProxy extends CommonProxy {
     private static FileWriter file;
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        dumpDimensions();
+    }
+
 
     @SuppressWarnings("unchecked")
     public static void dumpDimensions() {
