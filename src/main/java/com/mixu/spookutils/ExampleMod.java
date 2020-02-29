@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.mixu.spookutils;
 
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
