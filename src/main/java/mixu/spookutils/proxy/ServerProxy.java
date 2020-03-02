@@ -24,7 +24,6 @@ public class ServerProxy extends CommonProxy {
 
     @SuppressWarnings("unchecked")
     public static void dumpDimensions() {
-        // JSON object. Key value pairs are unordered. JSONObject supports java.util.Map interface.
         JSONObject obj = new JSONObject();
         DimensionManager.getRegisteredDimensions().forEach((k,v)->obj.put(k.getId(),k.getName()));
         /*obj.put("0", "Overworld");
