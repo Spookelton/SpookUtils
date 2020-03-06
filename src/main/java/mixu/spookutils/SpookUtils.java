@@ -1,19 +1,15 @@
 package mixu.spookutils;
 
 import mixu.spookutils.proxy.CommonProxy;
-import net.minecraftforge.common.DimensionManager;
+import mixu.spookutils.commands.reDumpDimensions;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONObject;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Map;
 
 @Mod(modid = SpookUtils.MODID, name = SpookUtils.NAME, version = SpookUtils.VERSION)
 public class SpookUtils
@@ -45,5 +41,10 @@ public class SpookUtils
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+    }
+
+    @EventHandler
+    public void serverInit(FMLServerStartingEvent event) {
+        event.registerServerCommand(new reDumpDimensions());
     }
 }

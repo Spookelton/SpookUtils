@@ -1,5 +1,6 @@
 package mixu.spookutils.proxy;
 
+import mixu.spookutils.packet.packetHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -7,6 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
@@ -15,10 +17,15 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent e) {
+        packetHandler.initPackets();
     }
 
     public void postInit(FMLPostInitializationEvent e) {
         //ServerProxy.dumpDimensions();
+    }
+
+    public void serverInit(FMLServerStartingEvent e) {
+
     }
 
     @SubscribeEvent
