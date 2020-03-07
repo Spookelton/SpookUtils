@@ -34,8 +34,10 @@ public class reDumpDimensions extends CmdBase {
                 sender.sendMessage(new TextComponentString(TextFormatting.RED + "This command is only usable on a dedicated server"));
             }
         } else {
-            dumpDimensions();
-            SpookUtils.logger.log(org.apache.logging.log4j.Level.INFO, "Non-player command sender " + sender.getName() + " dumped dimensions at " + sender.getPosition().toString());
+            if (server.isDedicatedServer()) {
+                dumpDimensions();
+                SpookUtils.logger.log(org.apache.logging.log4j.Level.INFO, "Non-player command sender " + sender.getName() + " dumped dimensions at " + sender.getPosition().toString());
+            }
         }
     }
 }
