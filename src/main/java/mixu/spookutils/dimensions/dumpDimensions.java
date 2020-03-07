@@ -15,7 +15,7 @@ public class dumpDimensions {
     private static FileWriter file;
 
     @SuppressWarnings("unchecked") @SideOnly(Side.SERVER)
-    public static void dumpDimensions() {
+    public static boolean dumpDimensions() {
         JSONObject obj = new JSONObject();
         DimensionManager.getRegisteredDimensions().forEach((k, v)->obj.put(k.getId(),k.getName()));
         /*obj.put("0", "Overworld");
@@ -27,12 +27,15 @@ public class dumpDimensions {
             // Constructs a FileWriter given a file name, using the platform's default charset
             File tempfile = new File(FMLServerHandler.instance().getSavesDirectory().getAbsolutePath()+"/SpookUtils/dimIDs.json");
             try {tempfile.delete();} catch(Exception e) {
-                SpookUtils.logger.warn(e);}
+                SpookUtils.logger.warn(e);
+                return false;
+            }
             file = new FileWriter(FMLServerHandler.instance().getSavesDirectory().getAbsolutePath()+"/SpookUtils/dimIDs.json");
             file.write(obj.toJSONString());
 
         } catch (IOException e) {
             SpookUtils.logger.error(e);
+            return false;
 
         } finally {
 
@@ -41,7 +44,9 @@ public class dumpDimensions {
                 file.close();
             } catch (IOException e) {
                 SpookUtils.logger.error(e);
+                return false;
             }
         }
+        return true;
     }
 }

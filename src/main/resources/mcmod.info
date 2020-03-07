@@ -3,7 +3,7 @@
   "modid": "spookutils",
   "name": "SpookUtils",
   "description": "Utilities for the Von Spookelton community's servers",
-  "version": "${version}",
+  "version": "1.2.0",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",

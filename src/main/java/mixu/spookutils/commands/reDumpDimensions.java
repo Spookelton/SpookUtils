@@ -2,25 +2,13 @@ package mixu.spookutils.commands;
 
 import mixu.spookutils.SpookUtils;
 import mixu.spookutils.base.CmdBase;
-import mixu.spookutils.packet.PacketReDumpDimensions;
-import mixu.spookutils.packet.packetHandler;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.server.FMLServerHandler;
-import org.apache.logging.log4j.Level;
-import org.json.simple.JSONObject;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import static mixu.spookutils.dimensions.dumpDimensions.dumpDimensions;
 
@@ -30,17 +18,24 @@ public class reDumpDimensions extends CmdBase {
         super("dumpDimensions",Level.OP);
     }
 
-    private static FileWriter file;
-
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         World world = sender.getEntityWorld();
         if (sender instanceof EntityPlayer) {
-            //packetHandler.net.sendToServer(new PacketReDumpDimensions.Message(1));
-            sender.sendMessage(new TextComponentString("Only works in console!"));
+            if (server.isDedicatedServer()) {
+                Boolean success = dumpDimensions();
+                if (success) {
+                    SpookUtils.logger.log(org.apache.logging.log4j.Level.INFO, "Player " + ((EntityPlayer) sender).getName() + " (UUID " + ((EntityPlayer) sender).getUniqueID() + ") dumped dimensions");
+                    sender.sendMessage(new TextComponentString(TextFormatting.DARK_GREEN + "Successfully dumped dimensions"));
+                } else {
+                    sender.sendMessage(new TextComponentString(TextFormatting.RED + "Failed to dump dimensions"));
+                }
+            } else {
+                sender.sendMessage(new TextComponentString(TextFormatting.RED + "This command is only usable on a dedicated server"));
+            }
         } else {
             dumpDimensions();
-            SpookUtils.logger.log(org.apache.logging.log4j.Level.INFO, "Dumped dimensions");
+            SpookUtils.logger.log(org.apache.logging.log4j.Level.INFO, "Non-player command sender " + sender.getName() + " dumped dimensions at " + sender.getPosition().toString());
         }
     }
 }

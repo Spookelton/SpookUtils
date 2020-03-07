@@ -1,5 +1,6 @@
 package mixu.spookutils;
 
+import mixu.spookutils.packet.NetworkHandler;
 import mixu.spookutils.proxy.CommonProxy;
 import mixu.spookutils.commands.reDumpDimensions;
 import net.minecraftforge.fml.common.Mod;
@@ -16,7 +17,7 @@ public class SpookUtils
 {
     public static final String MODID = "spookutils";
     public static final String NAME = "SpookUtils";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.2.0";
 
     @SidedProxy(clientSide = "mixu.spookutils.proxy.ClientProxy", serverSide = "mixu.spookutils.proxy.ServerProxy")
     public static CommonProxy proxy;
@@ -30,17 +31,18 @@ public class SpookUtils
     public void preInit(FMLPreInitializationEvent event)
     {
         logger = event.getModLog();
-        proxy.preInit(event);
+        proxy.preInit();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        proxy.init(event);
+        proxy.init();
+        NetworkHandler.init();
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        proxy.postInit(event);
+        proxy.postInit();
     }
 
     @EventHandler
