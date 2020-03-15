@@ -12,10 +12,10 @@ import net.minecraft.world.World;
 
 import static mixu.spookutils.dimensions.dumpDimensions.dumpDimensions;
 
-public class reDumpDimensions extends CmdBase {
+public class DumpDimensionsCommand extends CmdBase {
 
-    public reDumpDimensions() {
-        super("dumpDimensions",Level.OP);
+    public DumpDimensionsCommand() {
+        super("dumpDimensions", Level.OP);
     }
 
     @Override
