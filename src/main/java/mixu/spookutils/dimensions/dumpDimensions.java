@@ -18,14 +18,15 @@ public class dumpDimensions {
     public static boolean dumpDimensions() {
         JSONObject obj = new JSONObject();
         DimensionManager.getRegisteredDimensions().forEach((k, v)->obj.put(k.getId(),k.getName()));
+        DimensionManager.getRegisteredDimensions().forEach((k,v)->k.getName());
         /*obj.put("0", "Overworld");
         obj.put("-1", "Nether");
         obj.put("1", "The End");*/
         try {
-            File temporaryerTempfile = new File(FMLServerHandler.instance().getSavesDirectory().getAbsolutePath()+"/SpookUtils");
+            File temporaryerTempfile = new File(SpookUtils.getSpookUtilsDirectory());
             if (!temporaryerTempfile.exists()) {temporaryerTempfile.mkdir();}
             // Constructs a FileWriter given a file name, using the platform's default charset
-            File tempfile = new File(FMLServerHandler.instance().getSavesDirectory().getAbsolutePath()+"/SpookUtils/dimIDs.json");
+            File tempfile = new File(SpookUtils.getSpookUtilsDirectory() + "dimIDs.json");
             try {tempfile.delete();} catch(Exception e) {
                 SpookUtils.logger.warn(e);
                 return false;

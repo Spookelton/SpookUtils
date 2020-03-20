@@ -7,5 +7,7 @@ public class CommandRegisterer {
         event.registerServerCommand(new DumpDimensionsCommand());
         event.registerServerCommand(new MuteCommand());
         event.registerServerCommand(new UnmuteCommand());
+        event.registerServerCommand(new UnmuteAllCommand());
+        event.registerServerCommand(new ListMutedCommand());
     }
 }

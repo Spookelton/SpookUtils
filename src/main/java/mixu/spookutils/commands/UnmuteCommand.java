@@ -4,18 +4,19 @@ import com.google.gson.Gson;
 import com.mojang.authlib.GameProfile;
 import mixu.spookutils.SpookUtils;
 import mixu.spookutils.base.CmdBase;
+import mixu.spookutils.event.PlayerMuteStatusChangeEvent;
 import mixu.spookutils.helpers.FileHelper;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static mixu.spookutils.SpookUtils.SpookUtilsDirectory;
+import static mixu.spookutils.SpookUtils.getSpookUtilsDirectory;
 import static mixu.spookutils.SpookUtils.proxy;
 
 public class UnmuteCommand extends CmdBase {
@@ -25,8 +26,12 @@ public class UnmuteCommand extends CmdBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         checkArgs(sender, args, 1);
+        if (!server.isDedicatedServer()) {
+            sender.sendMessage(new TextComponentString(TextFormatting.RED + "This command is only usable in a dedicated server"));
+            return;
+        }
         Gson gson = new Gson();
-        String filePath = SpookUtilsDirectory + "mutedPlayers.json";
+        String filePath = getSpookUtilsDirectory() + "mutedPlayers.json";
         ArrayList mutedPlayersCollection;
         String player = null;
         String mutedPlayersString = null;
@@ -58,7 +63,8 @@ public class UnmuteCommand extends CmdBase {
             SpookUtils.logger.log(org.apache.logging.log4j.Level.INFO, k);
             if (k.equals("\""+playerUUID+"\"")) {
                 playerFound.set(true);
-                sender.sendMessage(new TextComponentString(TextFormatting.DARK_GREEN + "Unmuted player "+ playerProfile.getName() +"! (UUID of player is"+ playerUUID +")"));
+                sender.sendMessage(new TextComponentString(TextFormatting.DARK_GREEN + "Unmuted player "+ playerProfile.getName() +"! (UUID of player is "+ playerUUID +")"));
+                MinecraftForge.EVENT_BUS.post(new PlayerMuteStatusChangeEvent(playerProfile, false));
             }
         });
 

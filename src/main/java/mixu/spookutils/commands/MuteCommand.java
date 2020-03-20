@@ -4,17 +4,19 @@ import com.google.gson.Gson;
 import com.mojang.authlib.GameProfile;
 import mixu.spookutils.SpookUtils;
 import mixu.spookutils.base.CmdBase;
+import mixu.spookutils.event.PlayerMuteStatusChangeEvent;
 import mixu.spookutils.helpers.FileHelper;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static mixu.spookutils.SpookUtils.SpookUtilsDirectory;
+import static mixu.spookutils.SpookUtils.getSpookUtilsDirectory;
 import static mixu.spookutils.SpookUtils.proxy;
 
 public class MuteCommand extends CmdBase {
@@ -24,6 +26,10 @@ public class MuteCommand extends CmdBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         checkArgs(sender, args, 1);
+        if (!server.isDedicatedServer()) {
+            sender.sendMessage(new TextComponentString(TextFormatting.RED + "This command is only usable in a dedicated server"));
+            return;
+        }
         Gson gson = new Gson();
         ArrayList mutedPlayersCollection;
         String mutedPlayersString = null;
@@ -35,7 +41,7 @@ public class MuteCommand extends CmdBase {
             return;
         }
 
-        String filePath = SpookUtilsDirectory + "mutedPlayers.json";
+        String filePath = getSpookUtilsDirectory() + "mutedPlayers.json";
         boolean success = FileHelper.createFile(filePath);
         if (!success) {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "Failed to create muted players file"));
@@ -47,7 +53,7 @@ public class MuteCommand extends CmdBase {
         mutedPlayersCollection = gson.fromJson(mutedPlayersString, ArrayList.class);
 
         if (mutedPlayersCollection == null) {
-            sender.sendMessage(new TextComponentString(TextFormatting.RED + "Muted players list is empty"));
+            //sender.sendMessage(new TextComponentString(TextFormatting.RED + "Muted players list is empty"));
             mutedPlayersCollection = new ArrayList<String>();
         }
 
@@ -55,7 +61,6 @@ public class MuteCommand extends CmdBase {
         String playerUUID = playerProfile.getId().toString();
 
         mutedPlayersCollection.forEach(k -> {
-            SpookUtils.logger.log(org.apache.logging.log4j.Level.INFO, k);
             if (k.equals("\""+playerUUID+"\"")) {
                 sender.sendMessage(new TextComponentString(TextFormatting.RED + "Player is already muted"));
                 playerExists.set(true);
@@ -74,6 +79,7 @@ public class MuteCommand extends CmdBase {
                 sender.sendMessage(new TextComponentString(TextFormatting.RED + "Failed to write muted players list"));
             } else {
                 sender.sendMessage(new TextComponentString(TextFormatting.DARK_GREEN + "Player "+ args[0] +" muted successfully! (UUID of player is "+ playerUUID +")"));
+                MinecraftForge.EVENT_BUS.post(new PlayerMuteStatusChangeEvent(playerProfile, true));
             }
         }
     }

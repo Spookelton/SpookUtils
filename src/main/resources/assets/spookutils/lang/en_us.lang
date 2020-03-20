@@ -1,0 +1,6 @@
+#commands
+commands.dumpDimensions.usage=/dumpDimensions
+commands.listMuted.usage=/listMuted
+commands.mute.usage=/mute <player>
+commands.unmute.usage=/unmute <player>
+commands.unmuteAll.usage=/unmuteAll

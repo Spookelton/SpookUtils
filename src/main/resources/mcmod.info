@@ -1,17 +1,10 @@
-[
-{
+[{
   "modid": "spookutils",
   "name": "SpookUtils",
   "description": "Utilities for the Von Spookelton community's servers",
-  "version": "1.2.1",
+  "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
+  "url": "https://github.com/Mixu78/SpookUtils",
   "authorList": ["Mixu_78"],
-  "credits": "The atoms that make up everything in existence",
-  "logoFile": "",
-  "test": "yee",
-  "screenshots": [],
-  "dependencies": []
-}
-]
+  "credits": "The atoms that make up everything in existence"
+}]

@@ -73,21 +73,6 @@ public abstract class CmdBase extends CommandBase implements ICommandWithParent{
     }
 
     @Override
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos)
-    {
-        if (args.length == 0)
-        {
-            return Collections.emptyList();
-        }
-        else if (isUsernameIndex(args, args.length - 1))
-        {
-            return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
-        }
-
-        return super.getTabCompletions(server, sender, args, pos);
-    }
-
-    @Override
     public ICommand getParent()
     {
         return parent;
@@ -97,5 +82,11 @@ public abstract class CmdBase extends CommandBase implements ICommandWithParent{
     public void setParent(@Nullable ICommand c)
     {
         parent = c;
+    }
+
+    @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
+    {
+        return args.length >= 1 ? getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()) : Collections.emptyList();
     }
 }
