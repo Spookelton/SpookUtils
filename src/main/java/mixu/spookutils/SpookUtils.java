@@ -2,24 +2,22 @@ package mixu.spookutils;
 
 import mixu.spookutils.commands.CommandRegisterer;
 import mixu.spookutils.commands.ListMutedCommand;
+import mixu.spookutils.config.ModConfig;
 import mixu.spookutils.event.CommandEventHandler;
 import mixu.spookutils.event.MuteCommandEventHandler;
 import mixu.spookutils.helpers.FileHelper;
 import mixu.spookutils.main.MutedPlayerChecker;
 import mixu.spookutils.packet.NetworkHandler;
 import mixu.spookutils.proxy.CommonProxy;
-import mixu.spookutils.commands.DumpDimensionsCommand;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiOptions;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.common.config.Config.Type;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.server.FMLServerHandler;
@@ -28,12 +26,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
+import static mixu.spookutils.restAPI.RestApiCore.startAPI;
+
 @Mod(modid = SpookUtils.MODID, name = SpookUtils.NAME, version = SpookUtils.VERSION, acceptableRemoteVersions = "*")
 public class SpookUtils
 {
     public static final String MODID = "spookutils";
     public static final String NAME = "SpookUtils";
-    public static final String VERSION = "1.3.0";
+    public static final String VERSION = "1.4.0";
+
+    private static boolean isDedicated;
 
     @SideOnly(Side.SERVER)
     public static String getSpookUtilsDirectory() {
@@ -54,15 +56,19 @@ public class SpookUtils
     {
         logger = LogManager.getLogger("SpookUtils");
         proxy.preInit();
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init();
         NetworkHandler.init();
+        ConfigManager.sync(SpookUtils.MODID, Type.INSTANCE);
+        if (ModConfig.Commands.mute) {
         MinecraftForge.EVENT_BUS.register(MuteCommandEventHandler.class);
         MinecraftForge.EVENT_BUS.register(CommandEventHandler.class);
         MinecraftForge.EVENT_BUS.register(MutedPlayerChecker.class);
+        }
     }
 
     @EventHandler
@@ -73,10 +79,27 @@ public class SpookUtils
     @EventHandler
     public void serverInit(FMLServerStartingEvent event) {
         CommandRegisterer.registerCommands(event);
-        if (event.getServer().isDedicatedServer()) {
+        isDedicated = event.getServer().isDedicatedServer();
+        if (event.getServer().isDedicatedServer() && ModConfig.Commands.mute) {
             FileHelper.createFile(getSpookUtilsDirectory() + "mutedPlayers.json");
             MutedPlayerChecker.reloadMutedUsers();
             ListMutedCommand.reloadMutedUsers();
+        }
+    }
+
+    @EventHandler
+    public void serverStarted(FMLServerStartedEvent event) {
+        if (isDedicated && ModConfig.restApi.enabled) {
+        startAPI();
+        }
+    }
+
+    @SubscribeEvent
+    public void onConfigChange(OnConfigChangedEvent event) {
+        if (event.getModID().equals(SpookUtils.MODID)) {
+
+            ConfigManager.sync(SpookUtils.MODID, Type.INSTANCE);
+
         }
     }
 }

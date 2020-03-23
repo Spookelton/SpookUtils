@@ -7,6 +7,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -68,7 +69,7 @@ public abstract class CmdBase extends CommandBase implements ICommandWithParent{
     {
         if (args.length < i)
         {
-            throw new WrongUsageException(getUsage(sender));
+            sender.sendMessage(new TextComponentTranslation(getUsage(sender)));
         }
     }
 
