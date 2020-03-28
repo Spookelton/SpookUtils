@@ -2,7 +2,6 @@ package mixu.spookutils.commands;
 
 import com.google.gson.Gson;
 import com.mojang.authlib.GameProfile;
-import mixu.spookutils.SpookUtils;
 import mixu.spookutils.base.CmdBase;
 import mixu.spookutils.event.PlayerMuteStatusChangeEvent;
 import mixu.spookutils.helpers.FileHelper;

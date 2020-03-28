@@ -1,10 +1,8 @@
 package mixu.spookutils.restAPI;
 
-import mixu.spookutils.SpookUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.server.FMLServerHandler;
-import org.apache.logging.log4j.Level;
 
 import java.text.DecimalFormat;
 

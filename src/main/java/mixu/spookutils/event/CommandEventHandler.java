@@ -1,6 +1,5 @@
 package mixu.spookutils.event;
 
-import mixu.spookutils.SpookUtils;
 import mixu.spookutils.main.MutedPlayerChecker;
 import net.minecraft.command.server.CommandBroadcast;
 import net.minecraft.command.server.CommandEmote;

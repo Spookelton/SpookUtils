@@ -1,11 +1,9 @@
 package mixu.spookutils.restAPI;
 
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import mixu.spookutils.SpookUtils;
 import net.minecraftforge.fml.server.FMLServerHandler;
-import org.springframework.boot.SpringApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;

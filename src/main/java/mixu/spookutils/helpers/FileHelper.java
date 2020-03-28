@@ -1,11 +1,11 @@
 package mixu.spookutils.helpers;
 
 import mixu.spookutils.SpookUtils;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import org.apache.logging.log4j.Level;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 

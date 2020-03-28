@@ -1,8 +1,6 @@
 package mixu.spookutils.commands;
 
 import mixu.spookutils.config.ModConfig;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 public class CommandRegisterer {

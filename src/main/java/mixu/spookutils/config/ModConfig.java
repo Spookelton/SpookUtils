@@ -2,8 +2,8 @@ package mixu.spookutils.config;
 
 import mixu.spookutils.SpookUtils;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.Config.*;
-import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.Name;
 
 @Config(modid = SpookUtils.MODID)
 public class ModConfig {
