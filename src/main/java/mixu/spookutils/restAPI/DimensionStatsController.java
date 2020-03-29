@@ -5,6 +5,7 @@ import net.minecraftforge.common.DimensionManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< Updated upstream
 @RestController
 public class DimensionStatsController {
     @GetMapping("/dimstats")
@@ -20,6 +21,8 @@ import net.minecraftforge.common.DimensionManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+=======
+>>>>>>> Stashed changes
 @RestController
 public class DimensionStatsController {
     @GetMapping("/dimstats")
