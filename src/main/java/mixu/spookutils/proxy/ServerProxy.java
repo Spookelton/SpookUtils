@@ -1,5 +1,6 @@
 package mixu.spookutils.proxy;
 
+import mixu.spookutils.main.MutedPlayerChecker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.server.FMLServerHandler;
 
@@ -19,7 +20,6 @@ public class ServerProxy extends CommonProxy {
 
     @Override
     public void postInit() {
-
     }
 
     @Override

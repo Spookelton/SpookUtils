@@ -34,7 +34,7 @@ public class UnmuteCommand extends CmdBase {
         String filePath = getSpookUtilsDirectory() + "mutedPlayers.json";
         ArrayList mutedPlayersCollection;
         String player = null;
-        String mutedPlayersString = null;
+        String mutedPlayersString;
         AtomicBoolean playerFound = new AtomicBoolean(false);
 
         if (!proxy.SpookUtilsFolderExists()) {
@@ -42,7 +42,7 @@ public class UnmuteCommand extends CmdBase {
             return;
         }
 
-        boolean success = FileHelper.createFile(filePath);
+        boolean success = FileHelper.createFile(filePath, "[]");
         if (!success) {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "Failed to create muted players file"));
             return;
@@ -63,8 +63,7 @@ public class UnmuteCommand extends CmdBase {
             SpookUtils.logger.log(org.apache.logging.log4j.Level.INFO, k);
             if (k.equals("\""+playerUUID+"\"")) {
                 playerFound.set(true);
-                sender.sendMessage(new TextComponentString(TextFormatting.DARK_GREEN + "Unmuted player "+ playerProfile.getName() +"! (UUID of player is "+ playerUUID +")"));
-                MinecraftForge.EVENT_BUS.post(new PlayerMuteStatusChangeEvent(playerProfile, false));
+                sender.sendMessage(new TextComponentString(TextFormatting.DARK_GREEN + "Unmuted player "+ playerProfile.getName()));
             }
         });
 
@@ -74,6 +73,7 @@ public class UnmuteCommand extends CmdBase {
             mutedPlayersCollection.remove("\""+playerUUID+"\"");
             String writeJson = gson.toJson(mutedPlayersCollection);
             FileHelper.writeFile(filePath, writeJson);
+            MinecraftForge.EVENT_BUS.post(new PlayerMuteStatusChangeEvent(playerProfile, false));
         }
     }
 

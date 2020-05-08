@@ -1,5 +1,8 @@
 package mixu.spookutils.dimensions;
 
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import mixu.spookutils.SpookUtils;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
@@ -10,29 +13,27 @@ import org.json.simple.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 
-public class dumpDimensions {
+public class DumpDimensions {
     private static FileWriter file;
 
     @SuppressWarnings("unchecked") @SideOnly(Side.SERVER)
     public static boolean dumpDimensions() {
-        JSONObject obj = new JSONObject();
-        DimensionManager.getRegisteredDimensions().forEach((k, v)->obj.put(k.getId(),k.getName()));
-        DimensionManager.getRegisteredDimensions().forEach((k,v)->k.getName());
-        /*obj.put("0", "Overworld");
-        obj.put("-1", "Nether");
-        obj.put("1", "The End");*/
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Map<Integer, String> dimensions = Maps.newHashMap();
+        DimensionManager.getRegisteredDimensions().forEach((k, v)->dimensions.put(k.getId(), k.getName()));
+        
         try {
             File temporaryerTempfile = new File(SpookUtils.getSpookUtilsDirectory());
             if (!temporaryerTempfile.exists()) {temporaryerTempfile.mkdir();}
-            // Constructs a FileWriter given a file name, using the platform's default charset
             File tempfile = new File(SpookUtils.getSpookUtilsDirectory() + "dimIDs.json");
             try {tempfile.delete();} catch(Exception e) {
                 SpookUtils.logger.warn(e);
                 return false;
             }
             file = new FileWriter(FMLServerHandler.instance().getSavesDirectory().getAbsolutePath()+"/SpookUtils/dimIDs.json");
-            file.write(obj.toJSONString());
+            file.write(gson.toJson(dimensions, Map.class));
 
         } catch (IOException e) {
             SpookUtils.logger.error(e);

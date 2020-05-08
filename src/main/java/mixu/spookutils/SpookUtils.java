@@ -3,6 +3,7 @@ package mixu.spookutils;
 import mixu.spookutils.commands.CommandRegisterer;
 import mixu.spookutils.commands.ListMutedCommand;
 import mixu.spookutils.config.ModConfig;
+import mixu.spookutils.dimensions.DumpDimensions;
 import mixu.spookutils.event.CommandEventHandler;
 import mixu.spookutils.event.MuteCommandEventHandler;
 import mixu.spookutils.helpers.FileHelper;
@@ -80,8 +81,9 @@ public class SpookUtils
     public void serverInit(FMLServerStartingEvent event) {
         CommandRegisterer.registerCommands(event);
         isDedicated = event.getServer().isDedicatedServer();
+        if (isDedicated) DumpDimensions.dumpDimensions();
         if (event.getServer().isDedicatedServer() && ModConfig.Commands.mute) {
-            FileHelper.createFile(getSpookUtilsDirectory() + "mutedPlayers.json");
+            FileHelper.createFile(getSpookUtilsDirectory() + "mutedPlayers.json", "[]");
             MutedPlayerChecker.reloadMutedUsers();
             ListMutedCommand.reloadMutedUsers();
         }

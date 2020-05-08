@@ -10,7 +10,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import static mixu.spookutils.dimensions.dumpDimensions.dumpDimensions;
+import static mixu.spookutils.dimensions.DumpDimensions.dumpDimensions;
 
 public class DumpDimensionsCommand extends CmdBase {
 

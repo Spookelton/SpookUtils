@@ -1,6 +1,7 @@
 package mixu.spookutils.main;
 
 import com.google.gson.Gson;
+import mixu.spookutils.SpookUtils;
 import mixu.spookutils.helpers.FileHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -20,6 +21,7 @@ public class MutedPlayerChecker {
 
     @SubscribeEvent
     public static void onMessage(ServerChatEvent event) {
+        if (!hasMutedPlayers) return;
         if (checkPlayer(event.getPlayer().getUniqueID().toString())) {
             event.setCanceled(true);
             event.getPlayer().sendStatusMessage(new TextComponentString(TextFormatting.RED + "You are muted!"), true);
@@ -28,16 +30,12 @@ public class MutedPlayerChecker {
 
     public static boolean checkPlayer(String playerUUID) {
         String plrUUID = "\""+playerUUID+"\"";
-        if (mutedPlayersCollection.contains(plrUUID)) {
-            return true;
-        }
-        return false;
+        return mutedPlayersCollection.contains(plrUUID);
     }
 
     public static void reloadMutedUsers() {
         mutedPlayersString = FileHelper.readFile(filePath);
         mutedPlayersCollection = gson.fromJson(mutedPlayersString, ArrayList.class);
-        if (mutedPlayersCollection == null) { hasMutedPlayers = false; }
-        else { hasMutedPlayers = true; }
+        hasMutedPlayers = mutedPlayersCollection != null;
     }
 }

@@ -38,8 +38,7 @@ public class ListMutedCommand extends CmdBase {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "This command is only usable in a dedicated server"));
         }
         if (hasMutedPlayers) {
-            //lotsa stuff in one line
-            mutedPlayers = (String) mutedPlayersCollection.stream().reduce(""/*<- I have no idea what this identity thing is*/, (a, b) -> (a+"\n"+server.getPlayerProfileCache().getProfileByUUID(UUID.fromString(b.replace("\"", ""))).getName()));
+            mutedPlayers = mutedPlayersCollection.stream().reduce("", (a, b) -> (a+"\n"+server.getPlayerProfileCache().getProfileByUUID(UUID.fromString(b.replace("\"", ""))).getName()));
             mutedPlayers = mutedPlayers.replace("\"", "");
             mutedPlayers = "Muted players:" + mutedPlayers;
             sender.sendMessage(new TextComponentString(mutedPlayers));

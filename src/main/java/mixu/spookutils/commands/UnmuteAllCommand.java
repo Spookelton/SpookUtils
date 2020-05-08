@@ -23,7 +23,7 @@ public class UnmuteAllCommand extends CmdBase {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "This command is only usable in a dedicated server"));
             return;
         }
-        boolean success = FileHelper.writeFile(filePath, "");
+        boolean success = FileHelper.writeFile(filePath, "[]");
         if (success) {
             sender.sendMessage(new TextComponentString(TextFormatting.DARK_GREEN + "Unmuted all muted players"));
             MinecraftForge.EVENT_BUS.post(new PlayerMuteStatusChangeEvent(true));
