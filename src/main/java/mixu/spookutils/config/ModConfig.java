@@ -12,14 +12,14 @@ public class ModConfig {
 
     public static class CONFIG_RESTAPI {
         @Name("apiEnabled")
-        @Comment("Whether or not to enable the rest api")
+        @Comment("Whether or not to enable the rest api. CURRENTLY HAS NO EFFECT")
         public boolean enabled = true;
     }
 
     public static class CONFIG_COMMAND {
         @Comment("Enable muting commands")
         public boolean mute = true;
-        @Comment("Enable DumpDimensions command")
+        @Comment("Enable dumpDimensions command")
         public boolean dumpDimensions = true;
     }
 }

@@ -23,7 +23,7 @@ public class DumpDimensions {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Map<Integer, String> dimensions = Maps.newHashMap();
         DimensionManager.getRegisteredDimensions().forEach((k, v)->dimensions.put(k.getId(), k.getName()));
-        
+
         try {
             File temporaryerTempfile = new File(SpookUtils.getSpookUtilsDirectory());
             if (!temporaryerTempfile.exists()) {temporaryerTempfile.mkdir();}
@@ -32,7 +32,7 @@ public class DumpDimensions {
                 SpookUtils.logger.warn(e);
                 return false;
             }
-            file = new FileWriter(FMLServerHandler.instance().getSavesDirectory().getAbsolutePath()+"/SpookUtils/dimIDs.json");
+            file = new FileWriter(SpookUtils.getSpookUtilsDirectory() + "dimIDs.json");
             file.write(gson.toJson(dimensions, Map.class));
 
         } catch (IOException e) {

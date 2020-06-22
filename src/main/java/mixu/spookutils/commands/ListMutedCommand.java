@@ -26,8 +26,7 @@ public class ListMutedCommand extends CmdBase {
     public static void reloadMutedUsers() {
         mutedPlayersString = FileHelper.readFile(filePath);
         mutedPlayersCollection = gson.fromJson(mutedPlayersString, ArrayList.class);
-        if (mutedPlayersCollection == null) { hasMutedPlayers = false; }
-        else { hasMutedPlayers = true; }
+        hasMutedPlayers = mutedPlayersCollection != null;
     }
 
     @Override

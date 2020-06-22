@@ -14,7 +14,7 @@ public class CommandEventHandler {
     @SubscribeEvent
     public static void onCommandExecuted(CommandEvent event) {
         if (event.getCommand() instanceof CommandMessage || event.getCommand() instanceof CommandEmote || event.getCommand() instanceof CommandBroadcast) {
-            if (!(event.getSender() instanceof EntityPlayer)) {return;}
+            if (!(event.getSender() instanceof EntityPlayer)) return;
             if (MutedPlayerChecker.checkPlayer(event.getSender().getCommandSenderEntity().getUniqueID().toString())) {
                 event.setCanceled(true);
                 ((EntityPlayer) event.getSender()).sendStatusMessage(new TextComponentString(TextFormatting.RED + "You are muted!"),true);

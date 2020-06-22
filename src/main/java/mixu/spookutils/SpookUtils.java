@@ -8,7 +8,6 @@ import mixu.spookutils.event.CommandEventHandler;
 import mixu.spookutils.event.MuteCommandEventHandler;
 import mixu.spookutils.helpers.FileHelper;
 import mixu.spookutils.main.MutedPlayerChecker;
-import mixu.spookutils.packet.NetworkHandler;
 import mixu.spookutils.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config.Type;
@@ -34,7 +33,7 @@ public class SpookUtils
 {
     public static final String MODID = "spookutils";
     public static final String NAME = "SpookUtils";
-    public static final String VERSION = "1.4.0";
+    public static final String VERSION = "1.5.0";
 
     private static boolean isDedicated;
 
@@ -63,7 +62,6 @@ public class SpookUtils
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init();
-        NetworkHandler.init();
         ConfigManager.sync(SpookUtils.MODID, Type.INSTANCE);
         if (ModConfig.Commands.mute) {
         MinecraftForge.EVENT_BUS.register(MuteCommandEventHandler.class);
@@ -92,7 +90,7 @@ public class SpookUtils
     @EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
         if (isDedicated && ModConfig.restApi.enabled) {
-        startAPI();
+        //startAPI();
         }
     }
 
