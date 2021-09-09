@@ -1,10 +1,11 @@
 buildscript {
     repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
+        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
-        maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 
@@ -14,6 +15,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.4'
     id 'java'
 }
+
 apply plugin: 'net.minecraftforge.gradle'
 
 group = "net.spookelton.spookutils"
@@ -69,8 +71,8 @@ minecraft {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
 
-    compile 'com.googlecode.json-simple:json-simple:1.1.1'
-    compile('org.springframework.boot:spring-boot-starter-web:2.5.4') {
+    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation ('org.springframework.boot:spring-boot-starter-web:2.5.4') {
         exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
     }
 }

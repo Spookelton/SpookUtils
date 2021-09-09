@@ -4,7 +4,7 @@
   "description": "Utilities for the Von Spookelton community's servers",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://github.com/Mixu78/SpookUtils",
+  "url": "https://github.com/Spookelton/SpookUtils",
   "authorList": ["Mixu_78"],
   "credits": "The atoms that make up everything in existence"
 }]
