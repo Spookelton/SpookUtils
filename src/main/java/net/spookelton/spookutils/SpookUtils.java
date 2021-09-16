@@ -1,14 +1,12 @@
 package net.spookelton.spookutils;
 
 import net.spookelton.spookutils.config.ModConfig;
-import net.spookelton.spookutils.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -20,7 +18,14 @@ import org.apache.logging.log4j.Logger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Mod(modid = SpookUtils.MODID, name = SpookUtils.NAME, version = SpookUtils.VERSION, acceptableRemoteVersions = "*")
+import static net.spookelton.spookutils.restAPI.RestApiCore.startAPI;
+
+@Mod(
+        modid = SpookUtils.MODID,
+        name = SpookUtils.NAME,
+        version = SpookUtils.VERSION,
+        serverSideOnly = true
+)
 public class SpookUtils
 {
     public static final String MODID = "spookutils";
@@ -37,47 +42,44 @@ public class SpookUtils
         );
     }
 
-    @SidedProxy(clientSide = "net.spookelton.spookutils.proxy.ClientProxy", serverSide = "net.spookelton.spookutils.proxy.ServerProxy")
-    public static CommonProxy proxy;
-
     @Mod.Instance(MODID)
     public static SpookUtils instance;
 
     public static Logger logger;
 
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         logger = LogManager.getLogger("SpookUtils");
-        proxy.preInit();
         MinecraftForge.EVENT_BUS.register(this);
+        isDedicated = FMLServerHandler.instance().getServer().isDedicatedServer();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        proxy.init();
         ConfigManager.sync(SpookUtils.MODID, Type.INSTANCE);
     }
 
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
-        proxy.postInit();
-    }
 
     @EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
         if (isDedicated && ModConfig.restApi.enabled) {
-        //startAPI();
+            //startAPI();
+            FMLServerHandler.instance().getServer().addScheduledTask(new Runnable() {
+                @Override
+                public void run() {
+                    startAPI();
+                }
+            });
+        } else {
+            logger.warn("Running on integrated server, REST api not started");
         }
     }
 
     @SubscribeEvent
     public void onConfigChange(OnConfigChangedEvent event) {
         if (event.getModID().equals(SpookUtils.MODID)) {
-
             ConfigManager.sync(SpookUtils.MODID, Type.INSTANCE);
-
         }
     }
 }

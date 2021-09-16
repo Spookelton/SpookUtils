@@ -2,16 +2,16 @@ package net.spookelton.spookutils.restAPI;
 
 public class TPS {
 
-    private final long dimID;
+    private final long dimension;
     private final double tickTime;
 
-    public TPS(int dimID, double tickTime) {
-        this.dimID = dimID;
+    public TPS(int dimension, double tickTime) {
+        this.dimension = dimension;
         this.tickTime = tickTime;
     }
 
-    public long getDimID() {
-        return dimID;
+    public long getDimension() {
+        return dimension;
     }
 
     public double getTickTime() {

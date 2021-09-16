@@ -10,10 +10,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class FileHelper {
+    private static String FILE_NOT_FOUND = "File %s not found";
+    private static String READ_FILE = "Read %d bytes, content is %s";
 
     public static boolean createFile(String path, String defaultContent) {
         File file = new File(path);
-        if (file.exists()) {return true;}
+        if (file.exists()) { return true; }
         try {
             boolean success = file.createNewFile();
             writeFile(path, defaultContent);
@@ -27,7 +29,7 @@ public class FileHelper {
     public static boolean writeFile(String path, String content) {
         File file = new File(path);
         if (!file.exists()) {
-            SpookUtils.logger.log(Level.DEBUG, "File "+path+" not found");
+            SpookUtils.logger.log(Level.DEBUG, String.format(FILE_NOT_FOUND, path));
             return false;
         }
 
@@ -45,7 +47,7 @@ public class FileHelper {
             try {
                 fileWriter.flush();
                 fileWriter.close();
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
         }
         return true;
@@ -54,14 +56,14 @@ public class FileHelper {
     public static String readFile(String path) {
         File file = new File(path);
         if (!file.exists()) {
-            SpookUtils.logger.log(Level.DEBUG, "File "+path+" not found");
+            SpookUtils.logger.log(Level.DEBUG, String.format(FILE_NOT_FOUND, path));
             return null;
         }
         try {
             SpookUtils.logger.log(Level.DEBUG, "Reading "+path);
             byte[] result = Files.readAllBytes(Paths.get(path));
             String stringResult = new String(result);
-            SpookUtils.logger.log(Level.DEBUG, "Read "+result.length+" bytes, content is "+stringResult);
+            SpookUtils.logger.log(Level.DEBUG, String.format(READ_FILE, result.length, stringResult));
             return stringResult;
         } catch (IOException e) {
             SpookUtils.logger.log(Level.DEBUG, "Failed to read "+path);
