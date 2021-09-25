@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.*
 buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
@@ -10,22 +11,24 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.2.0.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-    id 'com.github.johnrengelman.shadow' version '4.0.4'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
     id 'java'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 
 group = "net.spookelton.spookutils"
-version = "${mod_version}"
+version = "1.0.0"
 archivesBaseName = "SpookUtils"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+    maven {
+        name = 'Restlet Maven'
+        url = 'https://maven.restlet.talend.com'
+    }
 }
 
 minecraft {
@@ -83,7 +86,27 @@ jar {
     }
 }
 
-shadowJar {}
+shadowJar {
+    def base = 'net.spookelton.spookutils.repack'
+    dependencies {
+        include(dependency('com.google.code.gson:gson:2.8.8'))
+        include(dependency('org.springframework..*::'))
+        exclude(dependency('org.apache.logging.log4j:log4j-to-slf4j:.*'))
+    }
+
+    relocate 'com.google.gson', "${base}.com.google.gson"
+    relocate 'org.springframework', "${base}.org.springframework"
+
+    /*// Required for Spring
+    mergeServiceFiles()
+    append 'META-INF/spring.handlers'
+    append 'META-INF/spring.schemas'
+    append 'META-INF/spring.tooling'
+    transform(PropertiesFileTransformer) {
+        paths = ['META-INF/spring.factories' ]
+        mergeStrategy = "append"
+    }*/
+}
 
 reobf {
     shadowJar {}

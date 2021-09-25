@@ -2,19 +2,19 @@ package net.spookelton.spookutils.restAPI;
 
 
 public class Error {
-    private final Integer statusCode;
-    private final String exceptionMessage;
+    private final Integer code;
+    private final String message;
 
     public Error(Integer errorCode, String exceptionMessage) {
-        this.statusCode = errorCode;
-        this.exceptionMessage = exceptionMessage;
+        this.code = errorCode;
+        this.message = exceptionMessage;
     }
 
-    public Integer getStatusCode() {
-        return statusCode;
+    public Integer getCode() {
+        return code;
     }
 
-    public String getExceptionMessage() {
-        return exceptionMessage;
+    public String getMessage() {
+        return message;
     }
 }

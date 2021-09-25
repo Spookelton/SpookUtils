@@ -12,13 +12,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.server.FMLServerHandler;
+import net.spookelton.spookutils.restAPI.ApiCore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static net.spookelton.spookutils.restAPI.RestApiCore.startAPI;
+import static net.spookelton.spookutils.restAPI.ApiCore.startAPI;
 
 @Mod(
         modid = SpookUtils.MODID,
@@ -64,13 +65,7 @@ public class SpookUtils
     @EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
         if (isDedicated && ModConfig.restApi.enabled) {
-            //startAPI();
-            FMLServerHandler.instance().getServer().addScheduledTask(new Runnable() {
-                @Override
-                public void run() {
-                    startAPI();
-                }
-            });
+            new Thread(ApiCore::startAPI).start();
         } else {
             logger.warn("Running on integrated server, REST api not started");
         }
